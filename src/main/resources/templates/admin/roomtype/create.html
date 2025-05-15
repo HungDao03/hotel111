@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm loại phòng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-5">
+    <div class="card shadow rounded">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">➕ Thêm loại phòng mới</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/admin/room-types/create}" th:object="${roomType}" method="post">
+                <!-- Dropdown -->
+                <div class="mb-3">
+                    <label for="roomTypeSelect" class="form-label">Loại phòng</label>
+                    <select class="form-select" id="roomTypeSelect" required>
+                        <option value="">-- Chọn loại phòng --</option>
+                        <option value="Phòng đơn">Phòng đơn</option>
+                        <option value="Phòng đôi">Phòng đôi</option>
+                        <option value="Phòng gia đình">Phòng gia đình</option>
+                        <option value="Phòng VIP">Phòng VIP</option>
+                    </select>
+                </div>
+
+                <!-- Hidden name binding -->
+                <input type="hidden" th:field="*{name}" id="roomTypeName" />
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Mô tả</label>
+                    <textarea class="form-control" id="description" th:field="*{description}" rows="3" readonly></textarea>
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Giá mỗi đêm (VNĐ)</label>
+                    <input type="number" class="form-control" id="price" th:field="*{pricePerNight}" readonly />
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/admin/room-types}" class="btn btn-secondary">⬅ Quay lại</a>
+                    <button type="submit" class="btn btn-success">💾 Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const roomData = {
+        "Phòng đơn": {
+            description: "Phòng dành cho 1 người, có 1 giường đơn.",
+            price: 1000000
+        },
+        "Phòng đôi": {
+            description: "Phòng dành cho 2 người, có 1 giường đôi hoặc 2 giường đơn.",
+            price: 1800000
+        },
+        "Phòng gia đình": {
+            description: "Phòng lớn dành cho gia đình, có thể ở 4-5 người.",
+            price: 3200000
+        },
+        "Phòng VIP": {
+            description: "Phòng sang trọng nhất với đầy đủ tiện nghi cao cấp, rộng rãi, có ban công, view đẹp.",
+            price: 5000000
+        }
+    };
+
+    document.getElementById("roomTypeSelect").addEventListener("change", function () {
+        const selected = this.value;
+        const nameInput = document.getElementById("roomTypeName");
+        const descriptionInput = document.getElementById("description");
+        const priceInput = document.getElementById("price");
+
+        if (roomData[selected]) {
+            nameInput.value = selected;
+            descriptionInput.value = roomData[selected].description;
+            priceInput.value = roomData[selected].price;
+        } else {
+            nameInput.value = "";
+            descriptionInput.value = "";
+            priceInput.value = "";
+        }
+    });
+</script>
+</body>
+</html>
