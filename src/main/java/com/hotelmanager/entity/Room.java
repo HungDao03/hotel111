@@ -29,9 +29,7 @@ public class Room {
 
     private String email;
 
-    private String imageUrl; // Có thể bỏ qua nếu chưa dùng
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // hoặc EAGER
     @JoinColumn(name = "room_type_id")
     private RoomType roomType;
 }

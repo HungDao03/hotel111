@@ -3,6 +3,7 @@ package com.hotelmanager.controller;
 import com.hotelmanager.entity.Room;
 import com.hotelmanager.enums.RoomStatus;
 import com.hotelmanager.service.room.IRoomService;
+import com.hotelmanager.service.roomtype.RoomTypeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/rooms")
 public class RoomController {
+    @Autowired
+    private RoomTypeService roomTypeService;
 
     @Autowired
     private IRoomService roomService;
@@ -24,7 +27,7 @@ public class RoomController {
     public String viewRoomStatus(Model model) {
         List<Room> rooms = roomService.findAll();
         model.addAttribute("rooms", rooms);
-        return "admin/room/room-status"; // View: templates/admin/room/room-status.html
+        return "admin/room/room-status";
     }
 
     // ✅ Danh sách phòng
@@ -32,15 +35,7 @@ public class RoomController {
     public String showRooms(Model model) {
         List<Room> rooms = roomService.findAll();
         model.addAttribute("rooms", rooms);
-        return "admin/room/room"; // View: templates/admin/room/room.html
-    }
-
-    // ✅ Chi tiết phòng
-    @GetMapping("/{id}")
-    public String showRoomDetail(@PathVariable Long id, Model model) {
-        Room room = roomService.findById(id);
-        model.addAttribute("room", room);
-        return "admin/room/room-detail";
+        return "admin/room/room";
     }
 
     // ✅ Hiển thị form tạo phòng
@@ -48,6 +43,7 @@ public class RoomController {
     public String showCreateForm(Model model) {
         model.addAttribute("room", new Room());
         model.addAttribute("roomStatuses", RoomStatus.values());
+        model.addAttribute("roomTypes", roomTypeService.findAll()); // ✅ Thêm để chọn RoomType
         return "admin/room/create";
     }
 
@@ -80,18 +76,29 @@ public class RoomController {
 
         if (result.hasErrors()) {
             model.addAttribute("roomStatuses", RoomStatus.values());
+            model.addAttribute("roomTypes", roomTypeService.findAll()); // ✅ Đảm bảo form vẫn có RoomType
             return "admin/room/create";
         }
 
         roomService.save(room);
-        return "redirect:/admin/rooms"; // ✅ CHỈNH: đúng route list phòng
+        return "redirect:/admin/rooms";
     }
 
-    // ✅ Cập nhật phòng
+    // ✅ Chi tiết phòng
+    @GetMapping("/{id}")
+    public String showRoomEdit(@PathVariable Long id, Model model) {
+        Room room = roomService.findById(id);
+        model.addAttribute("room", room);
+        model.addAttribute("roomStatuses", RoomStatus.values());
+        model.addAttribute("roomTypes", roomTypeService.findAll()); // ✅ Thêm để chọn RoomType
+        return "admin/room/room-edit";
+    }
+    // ✅ Xử lý cập nhật phòng
     @PostMapping("/update")
     public String updateRoom(@ModelAttribute("room") @Valid Room room,
                              BindingResult result,
                              Model model) {
+
         RoomStatus status = room.getStatus();
 
         if (status == RoomStatus.EMPTY) {
@@ -112,8 +119,9 @@ public class RoomController {
 
         if (result.hasErrors()) {
             model.addAttribute("room", room);
-            model.addAttribute("roomStatuses", RoomStatus.values()); // ✅ Thêm dòng này để dropdown không bị rỗng
-            return "admin/room/room-detail";
+            model.addAttribute("roomStatuses", RoomStatus.values());
+            model.addAttribute("roomTypes", roomTypeService.findAll());
+            return "admin/room/room-edit";
         }
 
         roomService.save(room);
@@ -124,6 +132,6 @@ public class RoomController {
     @GetMapping("/delete/{id}")
     public String deleteRoom(@PathVariable Long id) {
         roomService.deleteById(id);
-        return "redirect:/admin/rooms"; // ✅ CHỈNH
+        return "redirect:/admin/rooms";
     }
 }

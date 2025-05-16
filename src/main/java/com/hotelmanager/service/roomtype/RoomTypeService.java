@@ -5,6 +5,7 @@ import com.hotelmanager.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,7 +35,6 @@ public class RoomTypeService implements IRoomTypeService {
     public void deleteById(Long id) {
         roomTypeRepository.deleteById(id);
     }
-
 
 
 }

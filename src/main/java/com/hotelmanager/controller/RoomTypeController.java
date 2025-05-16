@@ -42,7 +42,10 @@ public class RoomTypeController {
         if (roomType == null) {
             return "redirect:/admin/room-types";
         }
+
         model.addAttribute("roomType", roomType);
+        model.addAttribute("roomTypeList", roomTypeService.findAll()); // 👈 thêm dòng này
+
         return "admin/roomtype/edit";
     }
 

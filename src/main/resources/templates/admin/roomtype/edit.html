@@ -13,31 +13,32 @@
         </div>
         <div class="card-body">
             <form th:action="@{/admin/room-types/edit/{id}(id=${roomType.id})}" th:object="${roomType}" method="post">
-                <!-- Dropdown -->
+                <!-- Dropdown động -->
                 <div class="mb-3">
                     <label for="roomTypeSelect" class="form-label">Loại phòng</label>
                     <select class="form-select" id="roomTypeSelect" required>
                         <option value="">-- Chọn loại phòng --</option>
-                        <option value="Phòng đơn" th:selected="${roomType.name == 'Phòng đơn'}">Phòng đơn</option>
-                        <option value="Phòng đôi" th:selected="${roomType.name == 'Phòng đôi'}">Phòng đôi</option>
-                        <option value="Phòng gia đình" th:selected="${roomType.name == 'Phòng gia đình'}">Phòng gia đình</option>
-                        <option value="Phòng VIP" th:selected="${roomType.name == 'Phòng VIP'}">Phòng VIP</option>
+                        <option th:each="type : ${roomTypeList}"
+                                th:value="${type.name}"
+                                th:text="${type.name}"
+                                th:selected="${type.name == roomType.name}">
+                        </option>
                     </select>
                 </div>
 
                 <!-- Hidden name binding -->
-                <input type="hidden" th:field="*{name}" id="roomTypeName" />
+                <input type="hidden" th:field="*{name}" id="roomTypeName"/>
 
                 <!-- Description -->
                 <div class="mb-3">
                     <label for="description" class="form-label">Mô tả</label>
-                    <textarea class="form-control" id="description" th:field="*{description}" rows="3" readonly></textarea>
+                    <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
                 </div>
 
                 <!-- Price -->
                 <div class="mb-3">
                     <label for="price" class="form-label">Giá mỗi đêm (VNĐ)</label>
-                    <input type="number" class="form-control" id="price" th:field="*{pricePerNight}" readonly />
+                    <input type="number" class="form-control" id="price" th:field="*{pricePerNight}" min="0" step="100000" required/>
                 </div>
 
                 <!-- Buttons -->
@@ -50,39 +51,31 @@
     </div>
 </div>
 
-<script>
-    const roomData = {
-        "Phòng đơn": {
-            description: "Phòng dành cho 1 người, có 1 giường đơn.",
-            price: 1000000
-        },
-        "Phòng đôi": {
-            description: "Phòng dành cho 2 người, có 1 giường đôi hoặc 2 giường đơn.",
-            price: 1800000
-        },
-        "Phòng gia đình": {
-            description: "Phòng lớn dành cho gia đình, có thể ở 4-5 người.",
-            price: 3200000
-        },
-        "Phòng VIP": {
-            description: "Phòng sang trọng nhất với đầy đủ tiện nghi cao cấp, rộng rãi, có ban công, view đẹp.",
-            price: 5000000
-        }
-    };
+<!-- Script xử lý chọn loại phòng -->
+<script th:inline="javascript">
+    let roomData = /*[[${roomTypeList}]]*/ [];
+    const roomDataMap = {};
+    roomData.forEach(type => {
+        roomDataMap[type.name] = {
+            description: type.description,
+            price: type.pricePerNight
+        };
+    });
+</script>
 
+<script>
     const select = document.getElementById("roomTypeSelect");
     const nameInput = document.getElementById("roomTypeName");
     const descriptionInput = document.getElementById("description");
     const priceInput = document.getElementById("price");
 
-    // Gán lại khi user chọn loại phòng mới
     select.addEventListener("change", function () {
         const selected = this.value;
 
-        if (roomData[selected]) {
+        if (roomDataMap[selected]) {
             nameInput.value = selected;
-            descriptionInput.value = roomData[selected].description;
-            priceInput.value = roomData[selected].price;
+            descriptionInput.value = roomDataMap[selected].description;
+            priceInput.value = roomDataMap[selected].price;
         } else {
             nameInput.value = "";
             descriptionInput.value = "";
@@ -90,7 +83,6 @@
         }
     });
 
-    // Gán giá trị hiện tại vào hidden field nếu người dùng không chọn lại dropdown
     window.addEventListener("DOMContentLoaded", () => {
         if (select.value) {
             nameInput.value = select.value;

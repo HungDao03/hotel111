@@ -1,116 +1,116 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Quản lý trạng thái phòng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .room-card {
-            cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-        }
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Quản lý trạng thái phòng</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <style>-->
+<!--        .room-card {-->
+<!--            cursor: pointer;-->
+<!--            transition: transform 0.2s ease-in-out;-->
+<!--        }-->
 
-        .room-card:hover {
-            transform: scale(1.02);
-        }
+<!--        .room-card:hover {-->
+<!--            transform: scale(1.02);-->
+<!--        }-->
 
-        .room-status-TRONG {
-            background-color: #d1e7dd;
-            border-color: #0f5132;
-        }
+<!--        .room-status-TRONG {-->
+<!--            background-color: #d1e7dd;-->
+<!--            border-color: #0f5132;-->
+<!--        }-->
 
-        .room-status-CO_NGUOI {
-            background-color: #f8d7da;
-            border-color: #842029;
-        }
-    </style>
-</head>
-<body>
-<div class="container py-5">
-    <h2 class="mb-4">🏨 Danh sách phòng</h2>
-    <div class="row g-4" th:each="room : ${rooms}">
-        <div class="col-md-3">
-            <div class="card room-card"
-                 th:classappend="'room-status-' + ${room.status.name()}"
-                 th:data-bs-toggle="'modal'"
-                 th:data-bs-target="'#roomDetailModal'"
-                 th:attr="data-room-id=${room.id},
-                          data-room-number=${room.roomNumber},
-                          data-status=${room.status},
-                          data-type=${room.roomType.name},
-                          data-description=${room.roomType.description},
-                          data-price=${room.roomType.pricePerNight},
-                          data-tenant=${room.tenantName},
-                          data-phone=${room.phoneNumber},
-                          data-email=${room.email}">
-                <div class="card-body text-center">
-                    <h5 class="card-title" th:text="'Phòng ' + ${room.roomNumber}">Phòng 101</h5>
-                    <p class="card-text" th:text="'Trạng thái: ' + ${room.status}">TRỐNG</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--        .room-status-CO_NGUOI {-->
+<!--            background-color: #f8d7da;-->
+<!--            border-color: #842029;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container py-5">-->
+<!--    <h2 class="mb-4">🏨 Danh sách phòng</h2>-->
+<!--    <div class="row g-4" th:each="room : ${rooms}">-->
+<!--        <div class="col-md-3">-->
+<!--            <div class="card room-card"-->
+<!--                 th:classappend="'room-status-' + ${room.status.name()}"-->
+<!--                 th:data-bs-toggle="'modal'"-->
+<!--                 th:data-bs-target="'#roomDetailModal'"-->
+<!--                 th:attr="data-room-id=${room.id},-->
+<!--                          data-room-number=${room.roomNumber},-->
+<!--                          data-status=${room.status},-->
+<!--                          data-type=${room.roomType.name},-->
+<!--                          data-description=${room.roomType.description},-->
+<!--                          data-price=${room.roomType.pricePerNight},-->
+<!--                          data-tenant=${room.tenantName},-->
+<!--                          data-phone=${room.phoneNumber},-->
+<!--                          data-email=${room.email}">-->
+<!--                <div class="card-body text-center">-->
+<!--                    <h5 class="card-title" th:text="'Phòng ' + ${room.roomNumber}">Phòng 101</h5>-->
+<!--                    <p class="card-text" th:text="'Trạng thái: ' + ${room.status}">TRỐNG</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<!-- Modal hiển thị chi tiết phòng -->
-<div class="modal fade" id="roomDetailModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Thông tin phòng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Số phòng:</strong> <span id="modalRoomNumber"></span></p>
-                <p><strong>Trạng thái:</strong> <span id="modalStatus"></span></p>
-                <p><strong>Loại phòng:</strong> <span id="modalType"></span></p>
-                <p><strong>Mô tả:</strong> <span id="modalDescription"></span></p>
-                <p><strong>Giá mỗi đêm:</strong> <span id="modalPrice"></span> VNĐ</p>
-                <hr>
-                <div id="tenantSection">
-                    <p><strong>Người thuê:</strong> <span id="modalTenant"></span></p>
-                    <p><strong>Điện thoại:</strong> <span id="modalPhone"></span></p>
-                    <p><strong>Email:</strong> <span id="modalEmail"></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash; Modal hiển thị chi tiết phòng &ndash;&gt;-->
+<!--<div class="modal fade" id="roomDetailModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title">Thông tin phòng</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <p><strong>Số phòng:</strong> <span id="modalRoomNumber"></span></p>-->
+<!--                <p><strong>Trạng thái:</strong> <span id="modalStatus"></span></p>-->
+<!--                <p><strong>Loại phòng:</strong> <span id="modalType"></span></p>-->
+<!--                <p><strong>Mô tả:</strong> <span id="modalDescription"></span></p>-->
+<!--                <p><strong>Giá mỗi đêm:</strong> <span id="modalPrice"></span> VNĐ</p>-->
+<!--                <hr>-->
+<!--                <div id="tenantSection">-->
+<!--                    <p><strong>Người thuê:</strong> <span id="modalTenant"></span></p>-->
+<!--                    <p><strong>Điện thoại:</strong> <span id="modalPhone"></span></p>-->
+<!--                    <p><strong>Email:</strong> <span id="modalEmail"></span></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<!-- JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    const roomModal = document.getElementById('roomDetailModal');
-    roomModal.addEventListener('show.bs.modal', function (event) {
-        const card = event.relatedTarget;
+<!--&lt;!&ndash; JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script>-->
+<!--    const roomModal = document.getElementById('roomDetailModal');-->
+<!--    roomModal.addEventListener('show.bs.modal', function (event) {-->
+<!--        const card = event.relatedTarget;-->
 
-        // Lấy dữ liệu từ thuộc tính data
-        const number = card.getAttribute('data-room-number');
-        const status = card.getAttribute('data-status');
-        const type = card.getAttribute('data-type');
-        const desc = card.getAttribute('data-description');
-        const price = card.getAttribute('data-price');
-        const tenant = card.getAttribute('data-tenant');
-        const phone = card.getAttribute('data-phone');
-        const email = card.getAttribute('data-email');
+<!--        // Lấy dữ liệu từ thuộc tính data-->
+<!--        const number = card.getAttribute('data-room-number');-->
+<!--        const status = card.getAttribute('data-status');-->
+<!--        const type = card.getAttribute('data-type');-->
+<!--        const desc = card.getAttribute('data-description');-->
+<!--        const price = card.getAttribute('data-price');-->
+<!--        const tenant = card.getAttribute('data-tenant');-->
+<!--        const phone = card.getAttribute('data-phone');-->
+<!--        const email = card.getAttribute('data-email');-->
 
-        // Gán vào modal
-        document.getElementById('modalRoomNumber').textContent = number;
-        document.getElementById('modalStatus').textContent = status;
-        document.getElementById('modalType').textContent = type;
-        document.getElementById('modalDescription').textContent = desc;
-        document.getElementById('modalPrice').textContent = price;
+<!--        // Gán vào modal-->
+<!--        document.getElementById('modalRoomNumber').textContent = number;-->
+<!--        document.getElementById('modalStatus').textContent = status;-->
+<!--        document.getElementById('modalType').textContent = type;-->
+<!--        document.getElementById('modalDescription').textContent = desc;-->
+<!--        document.getElementById('modalPrice').textContent = price;-->
 
-        // Gán người thuê nếu có
-        if (status === 'CO_NGUOI') {
-            document.getElementById('tenantSection').style.display = 'block';
-            document.getElementById('modalTenant').textContent = tenant || 'Không rõ';
-            document.getElementById('modalPhone').textContent = phone || 'Không rõ';
-            document.getElementById('modalEmail').textContent = email || 'Không rõ';
-        } else {
-            document.getElementById('tenantSection').style.display = 'none';
-        }
-    });
-</script>
-</body>
-</html>
+<!--        // Gán người thuê nếu có-->
+<!--        if (status === 'CO_NGUOI') {-->
+<!--            document.getElementById('tenantSection').style.display = 'block';-->
+<!--            document.getElementById('modalTenant').textContent = tenant || 'Không rõ';-->
+<!--            document.getElementById('modalPhone').textContent = phone || 'Không rõ';-->
+<!--            document.getElementById('modalEmail').textContent = email || 'Không rõ';-->
+<!--        } else {-->
+<!--            document.getElementById('tenantSection').style.display = 'none';-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

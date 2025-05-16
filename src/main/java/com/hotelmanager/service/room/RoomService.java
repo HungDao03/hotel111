@@ -35,4 +35,9 @@ public class RoomService implements IRoomService {
         roomRepository.deleteById(id);
     }
 
+
+    @Override
+    public List<Room> findAllWithRoomType() {
+        return roomRepository.findAllWithRoomType();
+    }
 }
