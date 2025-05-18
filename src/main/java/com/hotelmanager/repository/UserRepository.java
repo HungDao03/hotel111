@@ -1,7 +1,6 @@
 package com.hotelmanager.repository;
 
 import com.hotelmanager.entity.User;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
